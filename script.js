@@ -13,8 +13,32 @@ const min = 200;
 const max = 200;
 let mouseOverNo = 0;
 
-let currentX = 0;
-let currentY = 0;
+
+// const noPositions = [
+//     { x: -220, y: 0 },
+//     { x: 220, y: 0 },
+//     { x: 0, y: -120 },
+//     { x: 0, y: 120 },
+//     { x: -180, y: -100 },
+//     { x: 180, y: -100 },
+//     { x: -180, y: 100 },
+//     { x: 180, y: 100 },
+//     { x: 0, y: 0 }
+// ];
+
+const noPositions = [
+    { x: -235, y: 18 },
+    { x: 215, y: -22 },
+    { x: 14, y: -135 },
+    { x: -18, y: 128 },
+    { x: -195, y: -112 },
+    { x: 168, y: -92 },
+    { x: -162, y: 118 },
+    { x: 202, y: 96 },
+    { x: 6, y: -6 }
+];
+
+let noIndex = 0;
 
 
 // Click Envelope
@@ -112,40 +136,48 @@ yesBtn.addEventListener("click", () => {
 //     noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
 // }
 
-function moveNoButton() {
-    let distance = Math.random() * 200 + 100; // move 100-300px
-    const angle = Math.random() * Math.PI * 2;
+// function moveNoButton() {
+//     let distance = Math.random() * 300; // move 100-300px
+//     const angle = Math.random() * Math.PI * 2;
 
-    let moveX = Math.cos(angle) * distance;
-    let moveY = Math.sin(angle) * distance;
-    if (distance < 100) {distance = 300}
-    // Get viewport size
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
+//     let moveX = Math.cos(angle) * distance;
+//     let moveY = Math.sin(angle) * distance;
+//     if (distance < 150) {distance = 200}
+//     // Get viewport size
+//     const vw = window.innerWidth;
+//     const vh = window.innerHeight;
 
-    const btnRect = noBtn.getBoundingClientRect();
+//     const btnRect = noBtn.getBoundingClientRect();
 
-    // Current position on screen
-    let currentLeft = btnRect.left + moveX;
-    let currentTop = btnRect.top + moveY;
+//     // Current position on screen
+//     let currentLeft = btnRect.left + moveX;
+//     let currentTop = btnRect.top + moveY;
 
-    // Clamp so it stays visible
-    currentLeft = Math.max(0, Math.min(vw - btnRect.width, currentLeft));
-    currentTop = Math.max(0, Math.min(vh - btnRect.height, currentTop));
+//     // Clamp so it stays visible
+//     currentLeft = Math.max(0, Math.min(vw - btnRect.width, currentLeft));
+//     currentTop = Math.max(0, Math.min(vh - btnRect.height, currentTop));
 
-    // Move relative to the page using transform
-    noBtn.style.transition = "transform 0.3s ease";
-    noBtn.style.transform = `translate(${currentLeft - btnRect.left}px, ${currentTop - btnRect.top}px)`;
-}
-
-
-// function resetNoButton(){
-//     noBtn.style.transform = '';
+//     // Move relative to the page using transform
+//     noBtn.style.transition = "transform 0.3s ease";
+//     noBtn.style.transform = `translate(${currentLeft - btnRect.left}px, ${currentTop - btnRect.top}px)`;
 // }
 
+function moveNoButton() {
+    noIndex = (noIndex + 1) % noPositions.length;
+
+    const pos = noPositions[noIndex];
+
+    noBtn.style.transition = "transform 0.25s ease";
+    noBtn.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+}
+
 function resetNoButton(){
-    currentX = 0;
-    currentY = 0;
-    noBtn.style.transition = "transform 0.3s ease";
     noBtn.style.transform = '';
 }
+
+// function resetNoButton(){
+//     currentX = 0;
+//     currentY = 0;
+//     noBtn.style.transition = "transform 0.3s ease";
+//     noBtn.style.transform = '';
+// }
