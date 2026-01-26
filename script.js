@@ -13,6 +13,10 @@ const min = 200;
 const max = 200;
 let mouseOverNo = 0;
 
+let currentX = 0;
+let currentY = 0;
+
+
 // Click Envelope
 
 envelope.addEventListener("click", () => {
@@ -27,34 +31,36 @@ envelope.addEventListener("click", () => {
 // Logic to move the NO btn
 
 noBtn.addEventListener("mouseover", () => {
-    if (mouseOverNo < 35 ){
+    if (mouseOverNo < 21 ){
         moveNoButton()
+    } else{
+        resetNoButton()
     }
-    if (mouseOverNo >= 5){
+    if (mouseOverNo >= 3){
         catImg.src = "cat_flying_kiss.gif";
         title.textContent = "DON'T PRESS NOOO";
     }
-    if (mouseOverNo >= 10){
+    if (mouseOverNo >= 6){
         catImg.src = "cat_excited.gif";
         title.textContent = "PLEASEEE BE MY VALENTINEEEE SAYANGG";
     }
-    if (mouseOverNo >= 15){
+    if (mouseOverNo >= 9){
         catImg.src = "cat_lick.gif";
         title.textContent = "I KNOW YOU WANT A NICE DATEE";
     }
-    if (mouseOverNo >= 20){
+    if (mouseOverNo >= 12){
         catImg.src = "cat_muscle.gif";
         title.textContent = "YOU'RE MISSING OUT ON THISSS";
     }
-    if (mouseOverNo >= 25){
+    if (mouseOverNo >= 15){
         catImg.src = "cat_sweet.gif";
         title.textContent = "MAHALLL KITA BABY KO, AKIN SINTAK";
     }
-    if (mouseOverNo >= 30){
+    if (mouseOverNo >= 18){
         catImg.src = "cat_dicipline.gif";
         title.textContent = "STOP PLAYING WITH ME";
     }
-    if (mouseOverNo >= 35){
+    if (mouseOverNo >= 21){
         catImg.src = "cat_gun.gif";
         title.textContent = "Press Yes or else";
     }
@@ -65,7 +71,7 @@ noBtn.addEventListener("mouseover", () => {
 
 let yesScale = 1;
 noBtn.addEventListener("click", () => {
-    yesScale += 6;
+    yesScale += 4.5;
 
     if (yesBtn.style.position !== "fixed") {
         yesBtn.style.position = "fixed";
@@ -75,8 +81,9 @@ noBtn.addEventListener("click", () => {
     }else{
         yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
     }
-
-    moveNoButton();
+    if (mouseOverNo < 21 ){
+        moveNoButton()
+    }
 });
 
 // YES is clicked
@@ -93,14 +100,52 @@ yesBtn.addEventListener("click", () => {
     finalText.style.display = "block";
 });
 
-function moveNoButton(){
-    let distance = Math.random() * (max - min) + min;
-    if (distance < 100) {distance = 300}
+// function moveNoButton(){
+//     let distance = Math.random() * (max - min) + min;
+//     if (distance < 100) {distance = 300}
+//     const angle = Math.random() * Math.PI * 2;
+
+//     const moveX = Math.cos(angle) * distance;
+//     const moveY = Math.sin(angle) * distance;
+
+//     noBtn.style.transition = "transform 0.3s ease";
+//     noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+// }
+
+function moveNoButton() {
+    let distance = Math.random() * 200 + 100; // move 100-300px
     const angle = Math.random() * Math.PI * 2;
 
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
+    let moveX = Math.cos(angle) * distance;
+    let moveY = Math.sin(angle) * distance;
+    if (distance < 100) {distance = 300}
+    // Get viewport size
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
 
+    const btnRect = noBtn.getBoundingClientRect();
+
+    // Current position on screen
+    let currentLeft = btnRect.left + moveX;
+    let currentTop = btnRect.top + moveY;
+
+    // Clamp so it stays visible
+    currentLeft = Math.max(0, Math.min(vw - btnRect.width, currentLeft));
+    currentTop = Math.max(0, Math.min(vh - btnRect.height, currentTop));
+
+    // Move relative to the page using transform
     noBtn.style.transition = "transform 0.3s ease";
-    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    noBtn.style.transform = `translate(${currentLeft - btnRect.left}px, ${currentTop - btnRect.top}px)`;
+}
+
+
+// function resetNoButton(){
+//     noBtn.style.transform = '';
+// }
+
+function resetNoButton(){
+    currentX = 0;
+    currentY = 0;
+    noBtn.style.transition = "transform 0.3s ease";
+    noBtn.style.transform = '';
 }
