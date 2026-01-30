@@ -8,6 +8,7 @@ const title = document.getElementById("letter-title");
 const catImg = document.getElementById("letter-cat");
 const buttons = document.getElementById("letter-buttons");
 const finalText = document.getElementById("final-text");
+const funText = document.getElementById("fun-text");
 
 const min = 200;
 const max = 200;
@@ -46,6 +47,7 @@ let noIndex = 0;
 envelope.addEventListener("click", () => {
     envelope.style.display = "none";
     letter.style.display = "flex";
+    funText.style.display = "none";
 
     setTimeout( () => {
         document.querySelector(".letter-window").classList.add("open");
